@@ -25,7 +25,7 @@ describe('3 - Sua aplicação deve ter o endpoint GET `/user`', () => {
         token = result.token;
       });
 
-    await frisby
+      await frisby
       .setup({
         request: {
           headers: {
