@@ -8,18 +8,26 @@ const { User } = require('../models');
 const UsersRouter = express.Router();
 
 UsersRouter.post('/', DoesEmailExists, NewUserDataValidate, async (req, res) => {
-    const { displayName, email, image, id } = req.body;
+  const { displayName, email, image, id } = req.body;
 
-    await User.create({ displayName, email, image, id });
-    
-    const token = await TokenCreate({ displayName, email, image, id });
+  await User.create({ displayName, email, image, id });
 
-      return res.status(201).json({ token });
+  const token = await TokenCreate({ displayName, email, image, id });
+
+  return res.status(201).json({ token });
 });
 
 UsersRouter.get('/', ValidateToken, async (req, res) => {
   const allUsers = await User.findAll();
-  res.status(200).json(allUsers);
+  const { password, ...userWithoutPassword } = allUsers;
+  res.status(200).json(userWithoutPassword);
+});
+
+UsersRouter.get('/:id', ValidateToken, async (req, res) => {
+  const userFoundById = await User.findOne({ where: { id: req.params.id } });
+  if (!userFoundById) return res.status(404).json({ message: 'User does not exist' });
+  const { password, ...userWithoutPassword } = userFoundById.dataValues;
+  res.status(200).json(userWithoutPassword);
 });
 
 module.exports = UsersRouter;
