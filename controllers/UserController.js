@@ -4,7 +4,6 @@ const NewUserDataValidate = require('../middlewares/NewUserDataValidade');
 const DoesEmailExists = require('../middlewares/DoesEmailExists');
 const { User } = require('../models');
 
-
 const UsersRouter = express.Router();
 
 UsersRouter.post('/', DoesEmailExists, NewUserDataValidate, async (req, res) => {
