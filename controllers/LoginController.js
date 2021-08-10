@@ -1,5 +1,5 @@
 const express = require('express');
-const { TokenCreate } = require('../services/TokenCreate');
+const { TokenCreate } = require('../middlewares/TokenCreate');
 const LoginValidate = require('../middlewares/LoginValidate');
 
 const LoginRouter = express.Router();
