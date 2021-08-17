@@ -14,7 +14,14 @@ const login = async (req, res) => {
   return res.status(response.code).json(response.message);
 };
 
+const getAll = async (req, res) => {
+  const { authorization } = req.headers;
+  const response = await userServices.getAllService(authorization);
+  return res.status(response.code).json(response.message);
+};
+
 module.exports = {
   create,
   login,
+  getAll,
 };

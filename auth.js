@@ -13,6 +13,16 @@ const generateToken = (email, password) => {
   return token;
 };
 
+const validateToken = async (authorization) => {
+  try {
+    jwt.verify(authorization, SECRET);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 module.exports = {
   generateToken,
+  validateToken,
 };
