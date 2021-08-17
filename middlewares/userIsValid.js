@@ -10,4 +10,14 @@ const userIsValid = (req, res, next) => {
   next();
 };
 
-module.exports = userIsValid;
+const loginIsValid = (req, res, next) => {
+  const { email, password } = req.body;
+  const { code, message } = UserSchema.validateLogin(email, password);
+
+  if (message) {
+    return res.status(code).json({ message });
+  }
+  next();
+};
+
+module.exports = { userIsValid, loginIsValid };

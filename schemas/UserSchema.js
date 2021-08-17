@@ -7,6 +7,8 @@ const errors = {
   blankEmail: '"email" is required',
   passwordLength: '"password" length must be 6 characters long',
   blankPassword: '"password" is required',
+  emptyPassword: '"password" is not allowed to be empty',
+  emptyEmail: '"email" is not allowed to be empty',
 };
 
 const status = {
@@ -51,7 +53,16 @@ const validate = (displayName, email, password) => {
   return {};
 };
 
+const validateLogin = (email, password) => {
+  if (email === '') return { code: status.badRequest, message: errors.emptyEmail };
+  if (password === '') return { code: status.badRequest, message: errors.emptyPassword };
+  if (isBlank(email)) return { code: status.badRequest, message: errors.blankEmail };
+  if (isBlank(password)) return { code: status.badRequest, message: errors.blankPassword };
+  return {};
+};
+
 module.exports = {
   validate,
   alreadyExists,
+  validateLogin,
 };

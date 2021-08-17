@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { generateToken } = require('../auth');
 
 const create = async (displayName, email, password, image) => {
   const userExists = await User.findOne({ where: { email } });
@@ -9,6 +10,15 @@ const create = async (displayName, email, password, image) => {
   return {};
 };
 
+const loginService = async (email, password) => {
+  const userExists = await User.findOne({ where: { email } });
+  if (!userExists) return { code: 400, message: { message: 'Invalid fields' } };
+
+  const token = generateToken(email, password);
+  return { code: 200, message: { token } };
+};
+
 module.exports = {
   create,
+  loginService,
 };
