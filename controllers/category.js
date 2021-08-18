@@ -7,6 +7,13 @@ const create = async (req, res) => {
   return res.status(response.code).json(response.message);
 };
 
+const getAll = async (_req, res) => {
+  const response = await categoryServices.getAll();
+
+  return res.status(response.code).json(response.message);
+};
+
 module.exports = {
   create,
+  getAll,
 };
