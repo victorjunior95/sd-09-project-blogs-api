@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { generateToken, validateToken } = require('../auth');
+const { generateToken } = require('../auth');
 
 const create = async (displayName, email, password, image) => {
   const userExists = await User.findOne({ where: { email } });
@@ -10,7 +10,7 @@ const create = async (displayName, email, password, image) => {
   return {};
 };
 
-const loginService = async (email, password) => {
+const login = async (email, password) => {
   const userExists = await User.findOne({ where: { email } });
   if (!userExists) return { code: 400, message: { message: 'Invalid fields' } };
 
@@ -18,16 +18,20 @@ const loginService = async (email, password) => {
   return { code: 200, message: { token } };
 };
 
-const getAllService = async (authorization) => {
+const getAll = async () => {
   const result = await User.findAll();
-  const tokenIsValid = await validateToken(authorization);
-  if (!authorization) return { code: 401, message: { message: 'Token not found' } };
-  if (!tokenIsValid) return { code: 401, message: { message: 'Expired or invalid token' } };
+  return { code: 200, message: result };
+};
+
+const getById = async (id) => {
+  const result = await User.findByPk(id);
+  if (!result) return { code: 404, message: { message: 'User does not exist' } };
   return { code: 200, message: result };
 };
 
 module.exports = {
   create,
-  loginService,
-  getAllService,
+  login,
+  getAll,
+  getById,
 };
