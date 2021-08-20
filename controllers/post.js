@@ -44,9 +44,28 @@ const destroy = async (req, res, next) => {
   }
 };
 
+const search = async (req, res, next) => {
+  const { q } = req.query;
+
+  let result = null;
+
+  try {
+    if (!q) {
+      const { posts } = await PostService.getAll();
+      result = posts;
+    } else {
+      result = await PostService.search(q);
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   destroy,
+  search,
 };

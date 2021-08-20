@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const { newPostValidate } = require('../validation/post');
 const Utils = require('../validation/throw');
@@ -57,9 +58,24 @@ const destroy = async (token, id) => {
   await BlogPostModel.destroy({ where: { id } });
 };
 
+const search = async (query) => {
+  const item = await BlogPostModel.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ],
+    },
+    include: ['user', 'categories'],
+  });
+  console.log(item);
+  return item;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   destroy,
+  search,
 };
