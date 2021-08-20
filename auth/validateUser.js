@@ -2,7 +2,6 @@ const Joi = require('joi');
 
 const { Users } = require('../models');
 
-// const BAD_REQUEST_STATUS = 400;
 const CONFLICT_ERROR = {
   status: 409,
   message: 'User already registered',
@@ -28,9 +27,7 @@ const validateBody = async (req, res, next) => {
   const newUser = req.body;
   const { error } = userSchema.validate(newUser);
 
-  if (error) {
-    return next(error);
-  }
+  if (error) return next(error);
 
   const emailAlreadyExists = await verifyIfEmailAlreadyExists(req.body.email);
   if (emailAlreadyExists) throw CONFLICT_ERROR;

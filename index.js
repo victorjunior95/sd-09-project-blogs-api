@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const error = require('./middlewares/error');
 const routerUser = require('./routes/Users');
+const routerLogin = require('./routes/Login');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/user', routerUser);
+app.use('/login', routerLogin);
 
 app.use(error);
 
