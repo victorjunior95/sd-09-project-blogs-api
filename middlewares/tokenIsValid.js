@@ -10,7 +10,6 @@ const tokenIsValid = async (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Expired or invalid token' });
   const extractToken = jwt.verify(authorization, 'segredo');
   const user = await User.findOne({ where: { email: extractToken.email } });
-  console.log(user)
 
   req.user = user;
   return next();
