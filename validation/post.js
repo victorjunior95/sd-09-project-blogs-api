@@ -6,6 +6,12 @@ const newPostValidate = joi.object({
   categoryIds: joi.required(),
 });
 
+const updatePost = joi.object({
+  title: joi.string().required(),
+  content: joi.string().required(),
+});
+
 module.exports = {
   newPostValidate,
+  updatePost,
 };

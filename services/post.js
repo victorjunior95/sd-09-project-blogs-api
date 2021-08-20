@@ -29,6 +29,37 @@ const create = async (token, title, content, categoryIds) => {
   };
 };
 
+const getAll = async () => {
+  const posts = await BlogPostModel.findAll({ include: ['user', 'categories'] });
+  return {
+    statusCode: 200,
+    posts,
+  };
+};
+
+const getById = async (id) => {
+  const posts = await BlogPostModel.findByPk(id, { include: ['user', 'categories'] });
+  if (!posts) Utils.throwError(new Error(), 404, 'Post does not exist');
+  return {
+    statusCode: 200,
+    posts,
+  };
+};
+
+const destroy = async (token, id) => {
+  const { id: tokenUserId } = jwt.verify(token, JWT_SECRET);
+  const findPost = await BlogPostModel.findByPk(id);
+  if (!findPost) Utils.throwError(new Error(), 404, 'Post does not exist');
+  if (tokenUserId !== findPost.dataValues.userId) {
+  Utils
+    .throwError(new Error(), 401, 'Unauthorized user'); 
+}
+  await BlogPostModel.destroy({ where: { id } });
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
+  destroy,
 };

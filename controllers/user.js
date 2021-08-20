@@ -41,9 +41,21 @@ const getById = async (req, res, next) => {
   }
 };
 
+const destroy = async (req, res, next) => {
+  const token = req.headers.authorization;
+
+  try {
+    await UserService.destroy(token);
+    res.status(204).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   login,
   getAll,
   getById,
+  destroy,
 };

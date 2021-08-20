@@ -54,11 +54,19 @@ const getById = async (id) => {
     statusCode: 200,
     user: others,
   };
-}; 
+};
+
+const destroy = async (token) => {
+  const user = jwt.verify(token, JWT_SECRET);
+  const { id = null } = user;
+  const findUser = await UserModel.findByPk(id);
+  await findUser.destroy();
+};
 
 module.exports = {
   create,
   login,
   getAll,
   getById,
+  destroy,
 };

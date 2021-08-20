@@ -12,6 +12,41 @@ try {
 }
 };
 
+const getAll = async (_req, res, next) => {
+  try {
+    const { statusCode, posts } = await PostService.getAll();
+    res.status(statusCode).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const { statusCode, posts } = await PostService.getById(id);
+    res.status(statusCode).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const destroy = async (req, res, next) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+
+  try {
+    await PostService.destroy(token, id);
+    res.status(204).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
+  destroy,
 };
