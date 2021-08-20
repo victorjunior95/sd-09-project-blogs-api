@@ -22,13 +22,17 @@ module.exports = {
       },
       published: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       },
-      updatedAt: {
+      updated: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       }
-    });
+    },
+    { timestamps: false }
+    );
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('BlogPosts');

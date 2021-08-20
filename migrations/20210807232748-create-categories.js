@@ -14,11 +14,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       },
       updatedAt: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       }
     });
   },

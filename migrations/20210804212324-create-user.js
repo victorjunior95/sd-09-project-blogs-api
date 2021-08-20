@@ -27,12 +27,14 @@ module.exports = {
         allowNull: true,
       },
       createdAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       },
       updatedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("now")
       }
     });
   },
