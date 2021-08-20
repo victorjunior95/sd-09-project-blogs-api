@@ -18,4 +18,4 @@ app.use('/users', routerUser);
 
 app.use(error);
 
-module.exports = app;
+// module.exports = app;

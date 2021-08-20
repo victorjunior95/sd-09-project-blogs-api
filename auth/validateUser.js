@@ -24,12 +24,9 @@ const verifyIfEmailAlreadyExists = async (email) => {
   return emailAlreadyExists;
 };
 
-const validateUserFields = async (req, res, next) => {
+const validateBody = async (req, res, next) => {
   const newUser = req.body;
   const { error } = userSchema.validate(newUser);
-
-  const emailAlreadyExists = await verifyIfEmailAlreadyExists(req.body.email);
-  if (emailAlreadyExists) throw CONFLICT_ERROR;
 
   if (error) {
     return next(error);
@@ -37,7 +34,13 @@ const validateUserFields = async (req, res, next) => {
     //   message: error.details[0].message,
     // });
   }
+
+  const emailAlreadyExists = await verifyIfEmailAlreadyExists(req.body.email);
+  // se retornar true next(error);
+  // if (emailAlreadyExists) return next(error);
+  if (emailAlreadyExists) throw CONFLICT_ERROR;
+
   return next();
 };
 
-module.exports = validateUserFields;
+module.exports = validateBody;
