@@ -18,8 +18,8 @@ const create = async (displayName, email, password, image) => {
     if (findUser) Utils.throwError(new Error(), 409, 'User already registered');
 
     const newUser = await UserModel.create({ displayName, email, password, image });
-    const { dataValues: { password: DBPass, ...OtherInfo } } = newUser;
-    const token = jwt.sign(OtherInfo, JWT_SECRET, jwtConfig);
+    const { dataValues: { password: DBPass, ...others } } = newUser;
+    const token = jwt.sign(others, JWT_SECRET, jwtConfig);
     return {
       token,
       statusCode: 201,
@@ -30,15 +30,35 @@ const login = async (email, password) => {
   const { error } = loginValidate.validate({ email, password });
   if (error) Utils.throwError(error, 400);
   const user = await UserModel.findOne({ where: { email, password } });
-  console.log(user);
   if (!user) Utils.throwError(new Error(), 400, 'Invalid fields');
 
-  const { password: DBPass, ...otherInfo } = user;
-  const token = jwt.sign(otherInfo, JWT_SECRET, jwtConfig);
+  const { dataValues: { password: DBPass, ...others } } = user;
+  const token = jwt.sign(others, JWT_SECRET, jwtConfig);
   return { statusCode: 200, token };
 };
+
+const getAll = async () => {
+  let users = await UserModel.findAll();
+  users = users.map((item) => {
+    const { dataValues: { password, ...others } } = item;
+    return others;
+  });
+  return { statusCode: 200, users };
+};
+
+const getById = async (id) => {
+  const user = await UserModel.findByPk(id);
+  if (!user) Utils.throwError(new Error(), 404, 'User does not exist');
+  const { dataValues: { password, ...others } } = user;
+  return {
+    statusCode: 200,
+    user: others,
+  };
+}; 
 
 module.exports = {
   create,
   login,
+  getAll,
+  getById,
 };
