@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv');
 const userController = require('./controllers/user');
 const categoryController = require('./controllers/category');
+const blogPostController = require('./controllers/blogPost');
 const { userIsValid, loginIsValid } = require('./middlewares/userIsValid');
 const { tokenIsValid } = require('./middlewares/tokenIsValid');
 
@@ -19,6 +20,7 @@ app.get('/user', tokenIsValid, userController.getAll);
 app.get('/user/:id', tokenIsValid, userController.getById);
 app.post('/categories', tokenIsValid, categoryController.create);
 app.get('/categories', tokenIsValid, categoryController.getAll);
+app.post('/post', tokenIsValid, blogPostController.create);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
