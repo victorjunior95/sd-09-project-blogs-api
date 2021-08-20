@@ -9,7 +9,11 @@ const registerUser = (req, res) => userService.register(req.body)
 const loginUser = (req, res) => userService.login(req.body)
   .then((token) => res.status(OK_STATUS).json(token));
 
+const getAllUsers = (_req, res) => userService.getAll()
+.then((data) => res.status(OK_STATUS).json(data));
+
 module.exports = {
   registerUser,
   loginUser,
+  getAllUsers,
 };

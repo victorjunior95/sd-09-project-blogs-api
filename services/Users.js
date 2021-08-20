@@ -21,7 +21,13 @@ const login = async ({ email, password: psw }) => {
   return generateToken(user);
 };
 
+const getAll = async () => {
+  const users = await Users.findAll();
+  return users;
+};
+
 module.exports = {
   register,
   login,
+  getAll,
 };
