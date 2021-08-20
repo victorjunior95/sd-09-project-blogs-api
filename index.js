@@ -12,10 +12,8 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.listen(3000, () => console.log('ouvindo porta 3000!'));
-
 app.use('/user', routerUser);
 
 app.use(error);
 
-// module.exports = app;
+module.exports = app;
