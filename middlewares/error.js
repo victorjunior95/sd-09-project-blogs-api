@@ -1,4 +1,8 @@
 const BAD_REQUEST_STATUS = 400;
+// const CONFLICT_ERROR = {
+//   status: 409,
+//   message: 'User already registered',
+// };
 
 module.exports = (err, _req, res, _next) => {
   if (err.isJoi) {

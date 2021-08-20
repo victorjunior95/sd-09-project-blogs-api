@@ -27,12 +27,10 @@ const verifyIfEmailAlreadyExists = async (email) => {
 const validateBody = async (req, res, next) => {
   const newUser = req.body;
   const { error } = userSchema.validate(newUser);
+  console.log(error);
 
   if (error) {
     return next(error);
-    // return res.status(BAD_REQUEST_STATUS).json({
-    //   message: error.details[0].message,
-    // });
   }
 
   const emailAlreadyExists = await verifyIfEmailAlreadyExists(req.body.email);
