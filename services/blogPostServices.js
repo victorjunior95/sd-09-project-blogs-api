@@ -9,6 +9,12 @@ const validatePost = (title, content, categoryIds) => {
   return {};
 };
 
+const validateUpdate = (title, content) => {
+  if (isBlank(title)) return { code: 400, message: { message: '"title" is required' } };
+  if (isBlank(content)) return { code: 400, message: { message: '"content" is required' } };
+  return { code: 200 };
+};
+
 const create = async (title, content, categoryIds, userId) => {
   const isValid = validatePost(title, content, categoryIds);
   if (isValid.message) return isValid;
@@ -63,15 +69,23 @@ const userIsAuthorized = async (userId, postId) => {
     return { code: 404, message: { message: 'Post does not exist' } };
   }
   if (response.dataValues.user.id !== userId) {
-    return { code: 400, message: { message: 'Unauthorized user' } };
+    return { code: 401, message: { message: 'Unauthorized user' } };
   }
 
   return {};
 };
 
-const update = async ({ id, title, content, categoryIds, userId }) => {
+const updateIsValid = (title, content, categoryIds) => {
+  const isValid = validateUpdate(title, content);
+  if (isValid.message) return isValid;
   const category = categoryCheck(categoryIds);
   if (category.message) return category;
+  return { code: 200 };
+};
+
+const update = async ({ id, title, content, categoryIds, userId }) => {
+  const reqIsValid = updateIsValid(title, content, categoryIds);
+  if (reqIsValid.message) return reqIsValid;
   const user = await userIsAuthorized(userId, id);
   if (user.message) return user;
   await BlogPost.update({ title, content }, { where: { id } });
