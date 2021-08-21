@@ -35,4 +35,16 @@ module.exports = {
         ] });
         res.status(200).json(posts);
     },
+    async getPost(req, res) {
+        const { id } = req.params;
+        const post = await BlogPost.findOne({ where: { id },
+            include: [
+            { model: Categoria, as: 'categories' },
+            { model: User, as: 'user' },
+        ] });
+        if (!post) {
+            return res.status(404).json({ message: 'Post does not exist' });
+        }
+        res.status(200).json(post);
+    },
 };
