@@ -1,0 +1,26 @@
+const { create, validateNewUser } = require('../services/users.service');
+
+const newUserValidator = async (req, res, next) => {
+  try {
+    const error = await validateNewUser(req.body);
+  
+    if (error) return res.status(error.status).json({ message: error.message });
+  
+    return next();
+  } catch (err) { return res.status(400).json(err); }
+};
+
+const createUser = async (req, res) => {
+  try {
+    const { status, data } = await create(req.body);
+
+    return res.status(status).json(data);
+  } catch (err) { 
+    return res.status(400).json(err);
+  }
+};
+
+module.exports = {
+  newUserValidator,
+  createUser,
+};

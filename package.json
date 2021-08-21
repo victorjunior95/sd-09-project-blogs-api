@@ -6,18 +6,20 @@
     "dotenv": "8.2.0",
     "eslint-config-trybe-backend": "1.0.3",
     "express": "4.17.1",
+    "joi": "^17.4.2",
     "mysql2": "^2.1.0",
+    "nodemon": "^2.0.12",
     "sequelize": "6.3.4",
     "shelljs": "0.8.4"
   },
   "scripts": {
     "prestart": "npx sequelize-cli db:create && npx sequelize-cli db:migrate $",
-    "start": "node index.js",
+    "start": "node server.js",
     "drop": "npx sequelize-cli db:drop $",
     "seed": "npx sequelize-cli db:seed:all $",
     "test": "jest --runInBand",
     "test-coverage": "jest --runInBand --coverage",
-    "debug": "nodemon index.js",
+    "debug": "nodemon server.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
   },
   "devDependencies": {
