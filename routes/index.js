@@ -15,5 +15,6 @@ router.get('/post', middlewares.jwt, PostController.getAll);
 router.get('/post/:id', middlewares.jwt, PostController.getPost);
 router.put('/post/:id', middlewares.jwt,
  validators.authPost, validators.updatePost, PostController.update);
+router.delete('/post/:id', middlewares.jwt, validators.authPost, PostController.remove);
 
 module.exports = router;

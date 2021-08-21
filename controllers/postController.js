@@ -55,4 +55,9 @@ module.exports = {
             include: [{ model: Categoria, as: 'categories' }] });
         res.status(200).json(updatedPost);
     },
+    async remove(req, res) {
+        const { id } = req.params;
+        await BlogPost.destroy({ where: { id } });
+        res.status(204).json();
+    },
 };
