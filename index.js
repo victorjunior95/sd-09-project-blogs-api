@@ -18,6 +18,7 @@ app.post('/user', userIsValid, userController.create);
 app.post('/login', loginIsValid, userController.login);
 app.get('/user', tokenIsValid, userController.getAll);
 app.get('/user/:id', tokenIsValid, userController.getById);
+app.delete('/user/me', tokenIsValid, userController.deleteUser);
 app.post('/categories', tokenIsValid, categoryController.create);
 app.get('/categories', tokenIsValid, categoryController.getAll);
 app.post('/post', tokenIsValid, blogPostController.create);

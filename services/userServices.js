@@ -29,9 +29,16 @@ const getById = async (id) => {
   return { code: 200, message: result };
 };
 
+const deleteUser = async ({ id }) => {
+  const destroySuccess = await User.destroy({ where: { id } });
+  if (!destroySuccess) return { code: 404, message: { message: 'User does not exist' } };
+  return { code: 204 };
+};
+
 module.exports = {
   create,
   login,
   getAll,
   getById,
+  deleteUser,
 };
