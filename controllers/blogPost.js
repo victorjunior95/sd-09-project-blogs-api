@@ -15,7 +15,15 @@ const getAll = async (_req, res) => {
   return res.status(response.code).json(response.message);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const response = await blogPostServices.getById(id);
+
+  return res.status(response.code).json(response.message);
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
