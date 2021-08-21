@@ -54,4 +54,11 @@ module.exports = {
         }
         next();
     },
+    createPost(req, res, next) {
+        const requiredFields = required(['title', 'content', 'categoryIds'], req.body);
+        if (requiredFields) {
+            return invalidData(res, requiredFields);
+        }
+        next();
+    },
 };

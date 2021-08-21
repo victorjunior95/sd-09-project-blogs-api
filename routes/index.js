@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { UserController, CategoryController } = require('../controllers');
+const { UserController, CategoryController, PostController } = require('../controllers');
 const middlewares = require('../middlewares');
 const validators = require('../validators');
 
@@ -10,5 +10,6 @@ router.get('/user/:id', middlewares.jwt, UserController.getUser);
 
 router.post('/categories', middlewares.jwt, CategoryController.create);
 router.get('/categories', middlewares.jwt, CategoryController.getAll);
+router.post('/post', middlewares.jwt, validators.createPost, PostController.create);
 
 module.exports = router;
