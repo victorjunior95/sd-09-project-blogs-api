@@ -1,4 +1,3 @@
-const { userIsValid } = require('../middlewares/userIsValid');
 const { BlogPost, Category, User } = require('../models');
 
 const isBlank = (value) => (!value);
@@ -51,7 +50,7 @@ const categoryCheck = (categoryIds) => {
 };
 
 const userIsAuthorized = async (userId, postId) => {
-  const { dataValues } = await BlogPost.findOne({ 
+  const response = await BlogPost.findOne({ 
     where: { id: postId },
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
@@ -60,7 +59,10 @@ const userIsAuthorized = async (userId, postId) => {
     fields: ['userId'],
   });
 
-  if (dataValues.id !== userId) {
+  if (!response) {
+    return { code: 404, message: { message: 'Post does not exist' } };
+  }
+  if (response.dataValues.user.id !== userId) {
     return { code: 400, message: { message: 'Unauthorized user' } };
   }
 
@@ -88,9 +90,18 @@ const update = async ({ id, title, content, categoryIds, userId }) => {
   return { code: 200, message: result };
 };
 
+const deletePost = async ({ id, userId }) => {
+  const user = await userIsAuthorized(userId, id);
+  if (user.message) return user;
+  const destroySuccess = await BlogPost.destroy({ where: { id } });
+  if (!destroySuccess) return { code: 400, message: { message: 'Post does not exist' } };
+  return { code: 204 };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deletePost,
 };
