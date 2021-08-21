@@ -14,4 +14,8 @@ module.exports = {
         const categoria = await Categoria.create({ name });
         res.status(201).json(categoria);
     },
+    async getAll(req, res) {
+        const categorias = await Categoria.findAll();
+        res.status(200).json(categorias);
+    },
 };

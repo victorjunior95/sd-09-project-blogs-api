@@ -9,5 +9,6 @@ router.get('/user', middlewares.jwt, UserController.getAll);
 router.get('/user/:id', middlewares.jwt, UserController.getUser);
 
 router.post('/categories', middlewares.jwt, CategoryController.create);
+router.get('/categories', middlewares.jwt, CategoryController.getAll);
 
 module.exports = router;
