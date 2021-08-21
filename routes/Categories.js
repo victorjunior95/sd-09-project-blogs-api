@@ -11,5 +11,6 @@ const router = express.Router();
 router.post('/', validateToken,
   rescue(validateCategory),
   rescue(categoryController.registerCategories));
+router.get('/', validateToken, rescue(categoryController.getAllCategories));
 
 module.exports = router;

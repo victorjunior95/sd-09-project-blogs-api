@@ -6,6 +6,13 @@ const register = async (newCategory) => {
   return category;
 };
 
+const getAll = async () => {
+  const categories = await Categories.findAll();
+
+  return categories;
+};
+
 module.exports = {
   register,
+  getAll,
 };
