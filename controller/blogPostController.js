@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { BlogPosts, Users } = require('../models');
+const { BlogPosts, Users, Categories } = require('../models');
 require('dotenv').config();
 
 const createPost = async (req, res) => {
@@ -27,7 +27,12 @@ const getAllPost = async (req, res) => {
     if (!token) return res.status(401).json({ message: 'Token not found' });
     jwt.verify(token, process.env.JWT_SECRET);
 
-    const post = await BlogPosts.findAll();
+    const post = await BlogPosts.findAll({
+      include: [
+        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+      ],
+    });
+    console.log(post);
     return res.status(200).json(post);
   } catch (error) {
     return res.status(401).json({ message: 'Expired or invalid token' });
