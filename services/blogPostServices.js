@@ -1,3 +1,4 @@
+const { userIsValid } = require('../middlewares/userIsValid');
 const { BlogPost, Category, User } = require('../models');
 
 const isBlank = (value) => (!value);
@@ -42,8 +43,54 @@ const getById = async (id) => {
   return { code: 200, message: result };
 };
 
+const categoryCheck = (categoryIds) => {
+  if (categoryIds) {
+    return { code: 400, message: { message: 'Categories cannot be edited' } };
+  }
+  return {};
+};
+
+const userIsAuthorized = async (userId, postId) => {
+  const { dataValues } = await BlogPost.findOne({ 
+    where: { id: postId },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+    fields: ['userId'],
+  });
+
+  if (dataValues.id !== userId) {
+    return { code: 400, message: { message: 'Unauthorized user' } };
+  }
+
+  return {};
+};
+
+const update = async ({ id, title, content, categoryIds, userId }) => {
+  const category = categoryCheck(categoryIds);
+  if (category.message) return category;
+  const user = await userIsAuthorized(userId, id);
+  if (user.message) return user;
+  await BlogPost.update({ title, content }, { where: { id } });
+  const result = await BlogPost.findOne({ 
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  delete result.dataValues.id;
+  delete result.dataValues.user;
+  delete result.dataValues.published;
+  delete result.dataValues.updated;
+  return { code: 200, message: result };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
