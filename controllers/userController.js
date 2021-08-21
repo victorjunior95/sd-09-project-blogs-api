@@ -5,6 +5,15 @@ const models = require('../models');
  */
 const { User } = models;
 
+function mapUser(user) {
+    return {
+        id: user.id,
+        displayName: user.displayName,
+        email: user.email,
+        image: user.image,
+    };
+}
+
 module.exports = {
     async createUser(req, res) {
         const { displayName, email, password, image } = req.body;
@@ -27,5 +36,9 @@ module.exports = {
             { expiresIn: '1d', algorithm: 'HS256' },
         );
         res.status(200).json({ token });
+    },
+    async getAll(req, res) {
+        const users = await User.findAll();
+        res.status(200).json(users.map(mapUser));
     },
 };
