@@ -47,8 +47,15 @@ const login = async (body) => {
   return { status: 200, data: { token: generateToken(user) } };
 };
 
+const list = async () => {
+  const users = await Users.findAll({ attributes: { exclude: ['password'] } });
+
+  return { status: 200, data: users };
+};
+
 module.exports = {
   validateNewUser,
   create,
   login,
+  list,
 };
