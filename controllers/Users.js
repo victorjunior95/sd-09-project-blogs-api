@@ -10,10 +10,14 @@ const loginUser = (req, res) => userService.login(req.body)
   .then((token) => res.status(OK_STATUS).json(token));
 
 const getAllUsers = (_req, res) => userService.getAll()
-.then((data) => res.status(OK_STATUS).json(data));
+  .then((data) => res.status(OK_STATUS).json(data));
+
+const getUser = (req, res) => userService.getUser(req.params)
+  .then((data) => res.status(OK_STATUS).json(data));
 
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
+  getUser,
 };

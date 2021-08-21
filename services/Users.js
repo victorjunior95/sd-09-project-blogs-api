@@ -5,6 +5,10 @@ const INVALID_FIELDS = {
   status: 400,
   message: 'Invalid fields',
 };
+const NOT_FOUND_STATUS = {
+  status: 404,
+  message: 'User does not exist',
+};
 
 const register = async (newUser) => {
   const { password, ...user } = await Users.create(newUser);
@@ -26,8 +30,15 @@ const getAll = async () => {
   return users;
 };
 
+const getUser = async ({ id }) => {
+  const user = await Users.findOne({ where: { id } });
+  if (!user) throw NOT_FOUND_STATUS;
+  return user;
+};
+
 module.exports = {
   register,
   login,
   getAll,
+  getUser,
 };
