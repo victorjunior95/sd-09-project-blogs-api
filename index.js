@@ -21,6 +21,7 @@ app.get('/user/:id', tokenIsValid, userController.getById);
 app.post('/categories', tokenIsValid, categoryController.create);
 app.get('/categories', tokenIsValid, categoryController.getAll);
 app.post('/post', tokenIsValid, blogPostController.create);
+app.get('/post', tokenIsValid, blogPostController.getAll);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
