@@ -1,4 +1,4 @@
-const { create, validateNewUser } = require('../services/users.service');
+const { create, validateNewUser, login } = require('../services/users.service');
 
 const newUserValidator = async (req, res, next) => {
   try {
@@ -15,12 +15,19 @@ const createUser = async (req, res) => {
     const { status, data } = await create(req.body);
 
     return res.status(status).json(data);
-  } catch (err) { 
-    return res.status(400).json(err);
-  }
+  } catch (err) { return res.status(400).json(err); }
+};
+
+const userLogin = async (req, res) => {
+  try {
+    const { status, data } = await login(req.body);
+
+    return res.status(status).json(data);
+  } catch (err) { return res.status(400).json(err); }
 };
 
 module.exports = {
   newUserValidator,
   createUser,
+  userLogin,
 };
