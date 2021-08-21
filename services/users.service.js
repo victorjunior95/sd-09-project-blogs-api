@@ -53,9 +53,20 @@ const list = async () => {
   return { status: 200, data: users };
 };
 
+const getById = async (id) => {
+  const user = await Users.findByPk(id, { raw: true });
+
+  if (!user) return { status: 404, data: { message: 'User does not exist' } };
+
+  delete user.password;
+
+  return { status: 200, data: user };
+};
+
 module.exports = {
   validateNewUser,
   create,
   login,
   list,
+  getById,
 };
