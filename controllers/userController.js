@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const models = require('../models');
 /**
  * @type { { User: import('sequelize/types').ModelType } }
@@ -13,5 +14,18 @@ module.exports = {
         }
         await User.create({ displayName, email, password, image });
         res.status(201).json({});
+    },
+    async login(req, res) {
+        const { email, password } = req.body;
+        const user = await User.findOne({ where: { email } });
+        if (!user || user.password !== password) {
+            return res.status(400).json({ message: 'Invalid fields' });
+        }
+        const token = jwt.sign(
+            { email: user.email },
+            'secreto',
+            { expiresIn: '1d', algorithm: 'HS256' },
+        );
+        res.status(200).json({ token });
     },
 };

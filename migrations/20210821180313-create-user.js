@@ -5,14 +5,14 @@ module.exports = {
    * @param {import('sequelize').DataTypes} Sequelize
    */
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      display_name: {
+      displayName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
