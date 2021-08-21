@@ -13,5 +13,7 @@ router.get('/categories', middlewares.jwt, CategoryController.getAll);
 router.post('/post', middlewares.jwt, validators.createPost, PostController.create);
 router.get('/post', middlewares.jwt, PostController.getAll);
 router.get('/post/:id', middlewares.jwt, PostController.getPost);
+router.put('/post/:id', middlewares.jwt,
+ validators.authPost, validators.updatePost, PostController.update);
 
 module.exports = router;

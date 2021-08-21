@@ -1,3 +1,9 @@
+const models = require('../models');
+/**
+ * @type { { BlogPost: import('sequelize/types').ModelType } }
+ */
+const { BlogPost } = models;
+
 function isEmailInvalid(email) {
     const regex = /.+@.+\..+/;
     return !regex.test(email);
@@ -58,6 +64,27 @@ module.exports = {
         const requiredFields = required(['title', 'content', 'categoryIds'], req.body);
         if (requiredFields) {
             return invalidData(res, requiredFields);
+        }
+        next();
+    },
+    async authPost(req, res, next) {
+        const { user } = req;
+        if (!user) throw new Error('Should use jwt middleware before');
+        const { id } = req.params;
+        const post = await BlogPost.findOne({ where: { id } });
+        if (user.id !== post.userId) {
+            return res.status(401).json({ message: 'Unauthorized user' });
+        }
+        next();
+    },
+    async updatePost(req, res, next) {
+        const requiredFields = required(['title', 'content'], req.body);
+        if (requiredFields) {
+            return invalidData(res, requiredFields);
+        }
+        const { categoryIds } = req.body;
+        if (categoryIds) {
+            return invalidData(res, 'Categories cannot be edited');
         }
         next();
     },

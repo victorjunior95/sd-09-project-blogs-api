@@ -47,4 +47,12 @@ module.exports = {
         }
         res.status(200).json(post);
     },
+    async update(req, res) {
+        const { title, content } = req.body;
+        const { id } = req.params;
+        await BlogPost.update({ title, content }, { where: { id } });
+        const updatedPost = await BlogPost.findOne({ where: { id },
+            include: [{ model: Categoria, as: 'categories' }] });
+        res.status(200).json(updatedPost);
+    },
 };
