@@ -7,6 +7,7 @@ router.post('/user', validators.createUser, UserController.createUser);
 router.post('/login', validators.login, UserController.login);
 router.get('/user', middlewares.jwt, UserController.getAll);
 router.get('/user/:id', middlewares.jwt, UserController.getUser);
+router.delete('/user/me', middlewares.jwt, UserController.remove);
 
 router.post('/categories', middlewares.jwt, CategoryController.create);
 router.get('/categories', middlewares.jwt, CategoryController.getAll);

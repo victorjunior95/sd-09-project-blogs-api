@@ -49,4 +49,9 @@ module.exports = {
         }
         res.status(200).json(mapUser(user));
     },
+    async remove(req, res) {
+        const { user } = req;
+        await User.destroy({ where: { id: user.id } });
+        res.status(204).json();
+    },
 };
