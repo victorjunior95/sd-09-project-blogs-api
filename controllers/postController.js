@@ -4,9 +4,10 @@ const models = require('../models');
  * BlogPost: import('sequelize/types').ModelType,
  * Categoria: import('sequelize/types').ModelType,
  * PostsCategories: import('sequelize/types').ModelType,
+ * User: import('sequelize/types').ModelType,
  * } }
  */
-const { BlogPost, Categoria, PostsCategories } = models;
+const { BlogPost, Categoria, PostsCategories, User } = models;
 
 module.exports = {
     async create(req, res) {
@@ -26,5 +27,12 @@ module.exports = {
             id: post.id,
             userId: post.userId,
         });
+    },
+    async getAll(req, res) {
+        const posts = await BlogPost.findAll({ include: [
+            { model: Categoria, as: 'categories' },
+            { model: User, as: 'user' },
+        ] });
+        res.status(200).json(posts);
     },
 };
