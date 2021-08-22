@@ -13,6 +13,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 app.get('/user', validateJWT, User.getAll);
+app.get('/user/:id', validateJWT, User.getById);
 app.post('/user', User.create);
 app.post('/login', User.login);
 

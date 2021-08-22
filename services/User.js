@@ -105,4 +105,10 @@ const getAll = async () => {
   return users.map(formatUsers);
 };
 
-module.exports = { create, login, getAll };
+const getById = async (id) => {
+  const user = await User.findOne({ where: { id } });
+  if (!user) throw boom.notFound('User does not exist');
+  return user;
+};
+
+module.exports = { create, login, getAll, getById };

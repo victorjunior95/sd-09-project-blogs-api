@@ -21,4 +21,10 @@ const getAll = rescue(async (_req, res) => {
   res.status(OK).json(users);
 });
 
-module.exports = { create, login, getAll };
+const getById = rescue(async (req, res) => {
+  const { id } = req.params;
+  const user = await User.getById(id);
+  res.status(OK).json(user);
+});
+
+module.exports = { create, login, getAll, getById };
