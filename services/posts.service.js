@@ -76,6 +76,8 @@ const update = async (postId, body, userId) => {
     ],
   });
 
+  if (!post) return { status: 404, data: { message: 'Post does not exist' } };
+
   if (post.dataValues.userId !== userId) {
     return { status: 401, data: { message: 'Unauthorized user' } };
   }
@@ -84,9 +86,24 @@ const update = async (postId, body, userId) => {
   return { status: 200, data: post };
 };
 
+const deletePost = async (postId, userId) => {
+  const post = await BlogPosts.findByPk(postId);
+
+  if (!post) return { status: 404, data: { message: 'Post does not exist' } };
+
+  if (post.dataValues.userId !== userId) {
+    return { status: 401, data: { message: 'Unauthorized user' } };
+  }
+
+  await post.destroy();
+
+  return { status: 204 };
+};
+
 module.exports = {
   create,
   list,
   getById,
   update,
+  deletePost,
 };

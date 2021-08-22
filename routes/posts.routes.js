@@ -5,6 +5,7 @@ const {
   listPosts,
   getPostById,
   updatePost,
+  deletePostById,
 } = require('../controllers/posts.controller');
 
 Router.route('/')
@@ -13,6 +14,7 @@ Router.route('/')
 
 Router.route('/:id')
   .get(tokenVerification, getPostById)
-  .put(tokenVerification, updatePost);
+  .put(tokenVerification, updatePost)
+  .delete(tokenVerification, deletePostById);
 
 module.exports = Router;
