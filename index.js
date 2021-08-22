@@ -12,6 +12,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 app.post('/user', User.create);
+app.post('/login', User.login);
 
 app.use(error);
 
