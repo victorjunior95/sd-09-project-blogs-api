@@ -29,7 +29,7 @@ const login = async (req, res, next) => {
   res.status(200).json({ token });
 };
 
-const getAllUsers = async (req, res, _next) => {
+const getAllUsers = async (_req, res, _next) => {
   const allUsers = await User.getAllUsers();
 
   res.status(200).send(allUsers);
