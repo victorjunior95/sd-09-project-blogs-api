@@ -12,8 +12,12 @@ const getAllPost = (req, res) => postService.getAll()
 const getPost = (req, res) => postService.getPost(req.params)
   .then((post) => res.status(OK_STATUS).json(post));
 
+const updatePost = (req, res) => postService.update(req.params, req.body)
+  .then((updatedPost) => res.status(OK_STATUS).json(updatedPost));
+
 module.exports = {
   registerPost,
   getAllPost,
   getPost,
+  updatePost,
 };

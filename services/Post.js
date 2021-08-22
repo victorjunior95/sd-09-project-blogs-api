@@ -34,8 +34,19 @@ const getPost = async ({ id }) => {
   return blogPost;
 };
 
+const update = async (post, updateInfo) => {
+  const { title, content } = updateInfo;
+  const { id } = post;
+
+  await BlogPosts.update({ title, content }, { where: { id } });
+
+  const updatedPost = await getPost(post);
+  return updatedPost;
+};
+
 module.exports = {
   register,
   getAll,
   getPost,
+  update,
 };
