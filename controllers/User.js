@@ -16,4 +16,9 @@ const login = rescue(async (req, res) => {
   return res.status(OK).json({ token });
 });
 
-module.exports = { create, login };
+const getAll = rescue(async (_req, res) => {
+  const users = await User.getAll();
+  res.status(OK).json(users);
+});
+
+module.exports = { create, login, getAll };

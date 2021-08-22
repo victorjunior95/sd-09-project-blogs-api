@@ -93,4 +93,16 @@ const login = async (email, password) => {
   return token;
 };
 
-module.exports = { create, login };
+const formatUsers = ({ id, displayName, email, _password, image }) => ({ 
+  id,
+  displayName,
+  email,
+  image,
+});
+
+const getAll = async () => {
+  const users = await User.findAll();
+  return users.map(formatUsers);
+};
+
+module.exports = { create, login, getAll };
