@@ -1,4 +1,4 @@
-const { list } = require('../services/posts.service');
+const { list, getById } = require('../services/posts.service');
 const { create } = require('../services/posts.service');
 
 const createPost = async (req, res) => {
@@ -18,7 +18,17 @@ const listPosts = async (_req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, data } = await getById(id);
+  
+    return res.status(status).json(data);
+  } catch (err) { return res.status(400).json(err); }
+};
+
 module.exports = {
   createPost,
   listPosts,
+  getPostById,
 };
