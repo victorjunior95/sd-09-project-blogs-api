@@ -1,5 +1,10 @@
 const { BlogPosts, Users, Categories } = require('../models');
 
+const NOT_FOUND_STATUS = {
+  status: 404,
+  message: 'Post does not exist',
+};
+
 const register = async (newPost, userId) => {
   const { title, content } = newPost;
 
@@ -18,7 +23,19 @@ const getAll = async () => {
   return blogPosts;
 };
 
+const getPost = async ({ id }) => {
+  const blogPost = await BlogPosts.findOne({
+    where: { id },
+    include: [
+    { model: Users, as: 'user' },
+    { model: Categories, as: 'categories' },
+  ] });
+  if (!blogPost) throw NOT_FOUND_STATUS;
+  return blogPost;
+};
+
 module.exports = {
   register,
   getAll,
+  getPost,
 };

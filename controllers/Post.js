@@ -9,7 +9,11 @@ const registerPost = (req, res) => postService.register(req.body, req.user.id)
 const getAllPost = (req, res) => postService.getAll()
   .then((data) => res.status(OK_STATUS).json(data));
 
+const getPost = (req, res) => postService.getPost(req.params)
+  .then((post) => res.status(OK_STATUS).json(post));
+
 module.exports = {
   registerPost,
   getAllPost,
+  getPost,
 };
