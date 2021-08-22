@@ -18,7 +18,7 @@ const userSchema = Joi.object().keys({
   image: Joi.string(),
 });
 
-const verifyIfEmailAlreadyExists = async (email) => {
+const verifyEmailAlreadyExists = async (email) => {
   const emailAlreadyExists = await Users.findOne({ where: { email } });
   return emailAlreadyExists;
 };
@@ -29,7 +29,7 @@ const validateBody = async (req, res, next) => {
 
   if (error) return next(error);
 
-  const emailAlreadyExists = await verifyIfEmailAlreadyExists(req.body.email);
+  const emailAlreadyExists = await verifyEmailAlreadyExists(req.body.email);
   if (emailAlreadyExists) throw CONFLICT_ERROR;
 
   return next();

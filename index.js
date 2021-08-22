@@ -5,6 +5,7 @@ const error = require('./middlewares/error');
 const routerUser = require('./routes/Users');
 const routerLogin = require('./routes/Login');
 const routerCategories = require('./routes/Categories');
+const routerPost = require('./routes/Post');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/', (request, response) => {
 app.use('/user', routerUser);
 app.use('/login', routerLogin);
 app.use('/categories', routerCategories);
+app.use('/post', routerPost);
 
 app.use(error);
 
