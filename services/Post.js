@@ -44,9 +44,17 @@ const update = async (post, updateInfo) => {
   return updatedPost;
 };
 
+const erase = async ({ id }) => {
+  await BlogPosts.destroy({ where: { id } });
+
+  const deletedPost = await BlogPosts.findOne({ where: { id } });
+  if (!deletedPost) return true;
+};
+
 module.exports = {
   register,
   getAll,
   getPost,
   update,
+  erase,
 };
