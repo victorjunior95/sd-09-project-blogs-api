@@ -36,9 +36,16 @@ const getUser = async ({ id }) => {
   return user;
 };
 
+const erase = async ({ id }) => {
+  await Users.destroy({ where: { id } });
+  const deletedUser = await Users.findOne({ where: { id } });
+  if (!deletedUser) return true;
+};
+
 module.exports = {
   register,
   login,
   getAll,
   getUser,
+  erase,
 };
