@@ -41,7 +41,7 @@ const getUserById = async (req, res) => {
     const { status, data } = await getById(id);
 
     return res.status(status).json(data);
-  } catch (err) { console.log(err); return res.status(400).json(err); }
+  } catch (err) { return res.status(400).json(err); }
 };
 
 module.exports = {
