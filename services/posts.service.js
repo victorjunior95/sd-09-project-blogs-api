@@ -1,4 +1,5 @@
 const joi = require('joi');
+const { Op } = require('sequelize');
 const { Categories, BlogPosts, Users } = require('../models/index');
 
 const validateNewPost = (body) => {
@@ -39,13 +40,24 @@ const create = async (body, userId) => {
   return { status: 201, data: post };
 };
 
-const list = async () => {
-  const posts = await BlogPosts.findAll({
+const list = async (searchTerm) => {
+  const options = {
     include: [
       { model: Users, as: 'user' },
       { model: Categories, as: 'categories' },
     ],
-  });
+  };
+
+  if (searchTerm) {
+    options.where = {
+      [Op.or]: [
+        { title: { [Op.substring]: searchTerm } },
+        { content: { [Op.substring]: searchTerm } },
+      ],
+    };
+  }
+
+  const posts = await BlogPosts.findAll(options);
 
   return { status: 200, data: posts };
 };

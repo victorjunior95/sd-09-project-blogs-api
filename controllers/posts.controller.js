@@ -9,9 +9,10 @@ const createPost = async (req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
-const listPosts = async (_req, res) => {
+const listPosts = async (req, res) => {
   try {
-    const { status, data } = await list();
+    const { q } = req.query;
+    const { status, data } = await list(q);
 
     return res.status(status).json(data);
   } catch (err) { return res.status(400).json(err); }

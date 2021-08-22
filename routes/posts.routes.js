@@ -12,6 +12,9 @@ Router.route('/')
   .post(tokenVerification, createPost)
   .get(tokenVerification, listPosts);
 
+Router.route('/search')
+  .get(tokenVerification, listPosts);
+
 Router.route('/:id')
   .get(tokenVerification, getPostById)
   .put(tokenVerification, updatePost)
