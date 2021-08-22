@@ -1,5 +1,5 @@
 const joi = require('joi');
-const { Categories, BlogPosts } = require('../models/index');
+const { Categories, BlogPosts, Users } = require('../models/index');
 
 const validateNewPost = (body) => {
   const { error } = joi.object({
@@ -24,9 +24,23 @@ const create = async (body, userId) => {
 
   const post = await BlogPosts.create({ ...body, userId });
 
+  await post.setCategories(body.categoryIds);
+
   return { status: 201, data: post };
+};
+
+const list = async () => {
+  const posts = await BlogPosts.findAll({
+    include: [
+      { model: Users, as: 'user' },
+      { model: Categories, as: 'categories' },
+    ],
+  });
+
+  return { status: 200, data: posts };
 };
 
 module.exports = {
   create,
+  list,
 };
