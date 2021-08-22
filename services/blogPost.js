@@ -96,9 +96,25 @@ const updatePost = async ({ id, title, content, categoryIds, userId }) => {
  return result;
 };
 
+const deletePost = async ({ id, userId }) => {
+  const verifyUser = await verifyUserAuth(id, userId);
+  if (verifyUser) return verifyUser;
+  
+  const result = await BlogPost.destroy({ where: { id } });
+  
+  if (!result) {
+    return {
+      status: 404, error: { message: 'Post does not exist' },
+    };
+  }
+
+  return result;
+};
+
 module.exports = {
   create,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };
