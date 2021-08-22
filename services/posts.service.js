@@ -11,6 +11,16 @@ const validateNewPost = (body) => {
   return error && { status: 400, data: { message: error.details[0].message } };
 };
 
+const validateUpdatePost = (body) => {
+  const { error } = joi.object({
+    title: joi.string().required(),
+    content: joi.string().required(),
+    categoryIds: joi.array().items(joi.number()).optional(),
+  }).validate(body);
+
+  return error && { status: 400, data: { message: error.details[0].message } };
+};
+
 const create = async (body, userId) => {
   const error = validateNewPost(body);
 
@@ -52,8 +62,31 @@ const getById = async (id) => {
 
   return { status: 200, data: post };
 };
+
+const update = async (postId, body, userId) => {
+  const error = validateUpdatePost(body);
+
+  if (error) return error;
+
+  if (body.categoryIds) return { status: 400, data: { message: 'Categories cannot be edited' } };
+
+  const post = await BlogPosts.findByPk(postId, {
+    include: [
+      { model: Categories, as: 'categories' },
+    ],
+  });
+
+  if (post.dataValues.userId !== userId) {
+    return { status: 401, data: { message: 'Unauthorized user' } };
+  }
+
+  await post.update(body);
+  return { status: 200, data: post };
+};
+
 module.exports = {
   create,
   list,
   getById,
+  update,
 };
