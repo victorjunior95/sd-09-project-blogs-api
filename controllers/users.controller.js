@@ -1,4 +1,11 @@
-const { create, validateNewUser, login, list, getById } = require('../services/users.service');
+const {
+  create,
+  validateNewUser,
+  login,
+  list,
+  getById,
+  deleteUser,
+} = require('../services/users.service');
 
 const newUserValidator = async (req, res, next) => {
   try {
@@ -44,10 +51,21 @@ const getUserById = async (req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
+const deleteMe = async (req, res) => {
+  try {
+    const { loggedUserId } = req.params;
+
+    const { status } = await deleteUser(loggedUserId);
+
+    return res.status(status).send();
+  } catch (err) { return res.status(400).json(err); }
+};
+
 module.exports = {
   newUserValidator,
   createUser,
   userLogin,
   listAll,
   getUserById,
+  deleteMe,
 };

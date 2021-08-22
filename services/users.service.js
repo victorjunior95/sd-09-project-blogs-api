@@ -63,10 +63,18 @@ const getById = async (id) => {
   return { status: 200, data: user };
 };
 
+const deleteUser = async (id) => {
+  const user = await Users.findByPk(id);
+  await user.destroy();
+
+  return { status: 204 };
+};
+
 module.exports = {
   validateNewUser,
   create,
   login,
   list,
   getById,
+  deleteUser,
 };
