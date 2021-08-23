@@ -6,7 +6,8 @@ const createPost = async (req, res) => {
   try {
     const { user, body } = req;
     const result = await posts.createPost(body, user);
-    res.status(StatusCodes.CREATED).json(result);
+    if (result.isError) return res.status(result.status).json(result.err);
+      return res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -17,7 +18,8 @@ const getAllPosts = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO BUSCAR TODOS POSTS');
   try {
     const result = await posts.getAllPosts();
-    res.status(StatusCodes.OK).json(result);
+    if (result.isError) return res.status(result.status).json(result.err);
+   return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -28,7 +30,8 @@ const getPostById = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO BUSCAR UM POST');
   try {
     const result = await posts.getPostById(req.params.id);
-    res.status(StatusCodes.OK).json(result);
+    if (result.isError) return res.status(result.status).json(result.err);
+   return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -39,7 +42,8 @@ const updatePostById = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO ATUALIZAR UM POST');
   try {
     const result = await posts.updatePostById(req.params.id, req.body, req.user);
-    res.status(StatusCodes.OK).json(result);
+    if (result.isError) return res.status(result.status).json(result.err);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     let code = 400;
     if (error === 'Unauthorized user') code = 401;
@@ -65,8 +69,9 @@ const deletePost = async (req, res) => {
 const searchPosts = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO PROCURAR UM POST');
   try {
-    const response = await posts.searchPosts(req.query.q);
-    res.status(200).json(response);
+    const result = await posts.searchPosts(req.query.q);
+    if (result.isError) return res.status(result.status).json(result.err);
+    res.status(200).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });

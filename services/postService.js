@@ -44,7 +44,7 @@ const createPostCategories = async (categoryId, postId) => {
 
 const createPost = async (data, user) => {
   validateNewPostInputs(data);
-  const { id } = await user.dataValues;
+  const { id } = user;
   const { title, content, categoryIds } = data;
   await validateCategories(categoryIds);
   const result = await BlogPosts.create({
