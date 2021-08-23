@@ -3,6 +3,7 @@ const User = require('../services/User');
 
 const CREATED = 201;
 const OK = 200;
+const NO_CONTENT = 204;
 
 const create = rescue(async (req, res) => {
   const { displayName, email, password, image } = req.body;
@@ -27,4 +28,10 @@ const getById = rescue(async (req, res) => {
   res.status(OK).json(user);
 });
 
-module.exports = { create, login, getAll, getById };
+const deleteMe = rescue(async (req, res) => {
+  const { user } = req;
+  await User.deleteMe(user);
+  res.status(NO_CONTENT).send();
+});
+
+module.exports = { create, login, getAll, getById, deleteMe };

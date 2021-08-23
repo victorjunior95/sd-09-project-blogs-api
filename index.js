@@ -25,6 +25,7 @@ app.post('/categories', validateJWT, Categories.create);
 app.post('/post', validateJWT, Post.create);
 app.put('/post/:id', validateJWT, Post.editOne);
 app.delete('/post/:id', validateJWT, Post.deleteOne);
+app.delete('/user/me', validateJWT, User.deleteMe);
 
 app.use(error);
 
