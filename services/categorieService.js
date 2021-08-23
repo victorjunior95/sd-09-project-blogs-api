@@ -1,3 +1,4 @@
+const { StatusCodes } = require('http-status-codes');
 const JOI = require('joi');
 const { Categories } = require('../models');
 
@@ -8,7 +9,13 @@ const validateInputData = (data) =>
 
 const createCategory = async (data) => {
   const { error } = validateInputData(data);
-  if (error) throw error.details[0].message;
+  if (error) {
+    return { isError: true,
+     err: { message: error.details[0].message },
+     status: StatusCodes.BAD_REQUEST,
+    };
+  } 
+  
   const result = await Categories.create(data);
   return result;
 };
