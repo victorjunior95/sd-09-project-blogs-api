@@ -6,17 +6,17 @@ const middleware = require('../middlewares');
 
 const router = express.Router();
 
+router.put('/post/:id', middleware.auth, middleware.validUpdate, controllerPost.putPostsById);
+
 router.get('/user/:id', controllerUser.getUser);
-router.get('/post/:id', controllerPost.getPostsById);
+router.get('/post/:id', middleware.auth, controllerPost.getPostsById);
 router.get('/user', controllerUser.getAllUsers);
 router.get('/categories', controllerCategory.getAllCategories);
-router.get('/post', controllerPost.getAllPost);
+router.get('/post', middleware.auth, controllerPost.getAllPost);
 
 router.post('/user', middleware.validUser, controllerUser.createUsers);
 router.post('/login', middleware.createToken, controllerUser.login);
 router.post('/categories', middleware.nameCategory, controllerCategory.createCategory);
-router.post('/post', middleware.validPost, controllerPost.createPost);
-
-// router.put('/post:id', controllerPost.getAllPost);
+router.post('/post', middleware.auth, middleware.validPost, controllerPost.createPost);
 
 module.exports = router;

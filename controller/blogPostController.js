@@ -7,7 +7,6 @@ const createPost = async (req, res) => {
     const { title, content, categoryIds } = req.body;
     const token = req.headers.authorization;
 
-    if (!token) return res.status(401).json({ message: 'Token not found' });
     const { data } = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await Users.findOne({ where: { email: data } });
@@ -16,17 +15,12 @@ const createPost = async (req, res) => {
     const post = await BlogPosts.create({ userId, title, content, categoryIds });
     return res.status(201).json(post);
   } catch (error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: error });
   }
 };
 
 const getAllPost = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-
-    if (!token) return res.status(401).json({ message: 'Token not found' });
-    jwt.verify(token, process.env.JWT_SECRET);
-
     const post = await BlogPosts.findAll({
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
@@ -35,17 +29,13 @@ const getAllPost = async (req, res) => {
     });
     return res.status(200).json(post);
   } catch (error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: error });
   }
 };
 
 const getPostsById = async (req, res) => {
   try {
     const { id } = req.params;
-    const token = req.headers.authorization;
-
-    if (!token) return res.status(401).json({ message: 'Token not found' });
-    jwt.verify(token, process.env.JWT_SECRET);
 
     const postById = await BlogPosts.findByPk((id), {
       include: [
@@ -58,24 +48,18 @@ const getPostsById = async (req, res) => {
 
     return res.status(200).json(postById);
   } catch (error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: error });
   }
 };
 
-/*
 const putPostsById = async (req, res) => {
   try {
     // const { id } = req.params;
-    const token = req.headers.authorization;
-
-    if (!token) return res.status(401).json({ message: 'Token not found' });
-    jwt.verify(token, process.env.JWT_SECRET);
 
     return res.status(200).json('response');
   } catch (error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: error });
   }
 };
-*/
 
-module.exports = { createPost, getAllPost, getPostsById /* , putPostsById */ };
+module.exports = { createPost, getAllPost, getPostsById, putPostsById };
