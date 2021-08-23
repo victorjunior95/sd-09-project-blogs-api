@@ -3,6 +3,7 @@ const Post = require('../services/Post');
 
 const CREATED = 201;
 const OK = 200;
+const NO_CONTENT = 204;
 
 const create = rescue(async (req, res) => {
   const { title, content, categoryIds } = req.body;
@@ -30,4 +31,11 @@ const editOne = rescue(async (req, res) => {
   res.status(OK).json(edited);
 });
 
-module.exports = { create, getAll, getById, editOne };
+const deleteOne = rescue(async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  await Post.deleteOne(id, user);
+  return res.status(NO_CONTENT).send();
+});
+
+module.exports = { create, getAll, getById, editOne, deleteOne };

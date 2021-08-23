@@ -84,4 +84,14 @@ const editOne = async (id, user, info) => {
   return edited;
 };
 
-module.exports = { create, getAll, getById, editOne };
+const validateDelete = async (id, user) => {
+  const post = await getById(id);
+  if (post.userId !== user.id) throw boom.unauthorized('Unauthorized user');
+};
+
+const deleteOne = async (id, user) => {
+  await validateDelete(id, user);
+  await BlogPost.destroy({ where: { id } });
+};
+
+module.exports = { create, getAll, getById, editOne, deleteOne };
