@@ -30,10 +30,9 @@ const getAllPost = async (req, res) => {
     const post = await BlogPosts.findAll({
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Categories, as: 'categories' },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
-    console.log(post);
     return res.status(200).json(post);
   } catch (error) {
     return res.status(401).json({ message: 'Expired or invalid token' });
@@ -51,7 +50,7 @@ const getPostsById = async (req, res) => {
     const postById = await BlogPosts.findByPk((id), {
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        // { model: Category, as: 'categories', through: { attributes: [] } },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
 
@@ -63,6 +62,7 @@ const getPostsById = async (req, res) => {
   }
 };
 
+/*
 const putPostsById = async (req, res) => {
   try {
     // const { id } = req.params;
@@ -76,5 +76,6 @@ const putPostsById = async (req, res) => {
     return res.status(401).json({ message: 'Expired or invalid token' });
   }
 };
+*/
 
-module.exports = { createPost, getAllPost, getPostsById, putPostsById };
+module.exports = { createPost, getAllPost, getPostsById /* , putPostsById */ };

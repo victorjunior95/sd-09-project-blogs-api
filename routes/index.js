@@ -17,6 +17,6 @@ router.post('/login', middleware.createToken, controllerUser.login);
 router.post('/categories', middleware.nameCategory, controllerCategory.createCategory);
 router.post('/post', middleware.validPost, controllerPost.createPost);
 
-router.put('/post:id', controllerPost.getAllPost);
+// router.put('/post:id', controllerPost.getAllPost);
 
 module.exports = router;
