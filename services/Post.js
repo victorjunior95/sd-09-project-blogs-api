@@ -55,4 +55,33 @@ const getById = async (id) => {
   return post;
 };
 
-module.exports = { create, getAll, getById };
+const validateEditInputs = (info) => {
+  const { title, content } = info;
+  const edit = joi.object({
+    title: joi.string().required(),
+    content: joi.string().required(),
+  });
+  const { error } = edit.validate({ title, content });
+  return error;
+};
+
+const validateEdit = async (id, user, info) => {
+  const post = await getById(id);
+  if (post.userId !== user.id) throw boom.unauthorized('Unauthorized user');
+  if (info.categoryIds) throw boom.badRequest('Categories cannot be edited');
+  const invalidInputs = validateEditInputs(info);
+  if (invalidInputs) throw invalidInputs;
+};
+
+const editOne = async (id, user, info) => {
+  await validateEdit(id, user, info);
+  const { title, content } = info;
+  await BlogPost.update({ title, content }, { where: { id } });
+  const edited = await BlogPost.findByPk(id, {
+    attributes: { exclude: ['published', 'updated', 'id'] },
+    include: { model: Category, as: 'categories', through: { attributes: [] } },
+  });
+  return edited;
+};
+
+module.exports = { create, getAll, getById, editOne };

@@ -23,6 +23,7 @@ app.post('/user', User.create);
 app.post('/login', User.login);
 app.post('/categories', validateJWT, Categories.create);
 app.post('/post', validateJWT, Post.create);
+app.put('/post/:id', validateJWT, Post.editOne);
 
 app.use(error);
 

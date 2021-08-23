@@ -22,4 +22,12 @@ const getById = rescue(async (req, res) => {
   return res.status(OK).json(post);
 });
 
-module.exports = { create, getAll, getById };
+const editOne = rescue(async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  const info = req.body;
+  const edited = await Post.editOne(id, user, info);
+  res.status(OK).json(edited);
+});
+
+module.exports = { create, getAll, getById, editOne };
