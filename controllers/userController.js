@@ -7,7 +7,7 @@ const createUser = async (req, res) => {
       const { displayName, email, password, image } = req.body;
       const result = await UserService.createUser(displayName, email, password, image);
       if (result.isError) return res.status(result.status).json(result.err);
-      return res.status(StatusCodes.CREATED).json({ result });
+      return res.status(StatusCodes.CREATED).json({ token: result });
    } catch (error) {
     console.log(`[USER CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
     try {
       const { email, password } = req.body;
       const result = await UserService.userLogin(email, password);
-      console.log(result);
+      console.log(result, 'oque e isso');
       if (result.isError) return res.status(result.status).json(result.err);
       return res.status(StatusCodes.OK).json({ token: result });
     } catch (error) {
@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
     console.log('[USER CONTROLLER] : CHAMOU O MÉTODO GET ALL USERS');
    try {
     const users = await UserService.getAllUser();
-    return res.status(StatusCodes.OK).json({ users });
+    return res.status(StatusCodes.OK).json(users);
   } catch (error) {
     console.log(`[USER CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
       const { id } = req.params;
       const user = await UserService.getById(id);
       if (user.isError) return res.status(user.status).json(user.err);
-      return res.status(StatusCodes.OK).json({ user });
+      return res.status(StatusCodes.OK).json(user);
     } catch (error) {
       console.log(`[USER CONTROLLER] : buscar => ${error}`);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
