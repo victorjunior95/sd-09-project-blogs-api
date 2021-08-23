@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
       const result = await UserService.userLogin(email, password);
       console.log(result);
       if (result.isError) return res.status(result.status).json(result.err);
-      return res.status(StatusCodes.OK).json({ result });
+      return res.status(StatusCodes.OK).json({ token: result });
     } catch (error) {
       console.log(`[USER CONTROLLER] : buscar => ${error}`);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
