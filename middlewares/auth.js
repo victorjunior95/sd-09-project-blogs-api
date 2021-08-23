@@ -2,11 +2,11 @@ require('dotenv/config');
 const jwt = require('jsonwebtoken');
 const { StatusCodes } = require('http-status-codes');
 const Joi = require('joi');
-const { users } = require('../models');
+const { Users } = require('../models');
 
-const schema = Joi.object({
+const schemaUserLogin = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.required(),
+  password: Joi.string().length(6).required(),
 });
 
 const secret = process.env.JWT_SECRET;
@@ -17,13 +17,13 @@ const getToken = async (req, res) => {
     expiresIn: '1d',
     algorithm: 'HS256',
   };
-  const { error } = schema.validate({ email, password });
+  const { error } = schemaUserLogin.validate({ email, password });
   if (error) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'All fields must be filled' });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ message: error.details[0].message });
   }
-const validUser = await users.findUser(email);
+const validUser = await Users.findOne({ where: { email, password } });
 if (!validUser || validUser.password !== password) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Incorrect username or password' });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ message: error.details[0].message });
   }
 
   const token = jwt.sign({ validUser }, secret, jwtConfig);

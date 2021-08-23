@@ -19,8 +19,9 @@ const createUser = async (req, res) => {
     try {
       const { email, password } = req.body;
       const result = await UserService.userLogin(email, password);
+      console.log(result);
       if (result.isError) return res.status(result.status).json(result.err);
-      return res.status(200).json({ result });
+      return res.status(StatusCodes.OK).json({ result });
     } catch (error) {
       console.log(`[USER CONTROLLER] : buscar => ${error}`);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -31,7 +32,7 @@ const createUser = async (req, res) => {
     console.log('[USER CONTROLLER] : CHAMOU O MÉTODO GET ALL USERS');
    try {
     const users = await UserService.getAllUser();
-    return res.status(200).json(users);
+    return res.status(StatusCodes.OK).json({ users });
   } catch (error) {
     console.log(`[USER CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -44,17 +45,27 @@ const createUser = async (req, res) => {
       const { id } = req.params;
       const user = await UserService.getById(id);
       if (user.isError) return res.status(user.status).json(user.err);
-      return res.status(200).json(user);
+      return res.status(StatusCodes.OK).json({ user });
     } catch (error) {
       console.log(`[USER CONTROLLER] : buscar => ${error}`);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
   };
-  
+  const deleteUser = async (req, res) => {
+    console.log('[USER CONTROLLER] : CHAMOU O MÉTODO DELETE');
+    try {
+      await UserService.deleteUser(req.user.dataValues.id);
+      res.status(StatusCodes.NO_CONTENT).end();
+    } catch (error) {
+      console.log(`[USER CONTROLLER] : buscar => ${error}`);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+  };
   module.exports = {
     createUser,
     userLogin,
     getAllUser,
     getById,
+    deleteUser,
     
   }; 

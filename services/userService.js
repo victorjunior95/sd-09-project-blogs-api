@@ -3,7 +3,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || 'SemSecredo';
 
 const jwtConfig = {
   expiresIn: '7d',
@@ -30,8 +30,7 @@ const schemaUser = Joi.object({
  
 const createUser = async (displayName, email, password, image) => {
    const { error } = schemaUser.validate({ displayName, email, password });
-   console.log(error, 'antes'); 
-  if (error) {
+    if (error) {
       return {
       isError: true,
       err: { message: error.details[0].message },
@@ -74,7 +73,7 @@ const createUser = async (displayName, email, password, image) => {
    const { password: _, ...userWithoutPassword } = login.dataValues;
 
    const token = jwt.sign(userWithoutPassword, secret, jwtConfig);
-
+  
    return token;
  };
 
@@ -98,9 +97,12 @@ const createUser = async (displayName, email, password, image) => {
    return user;
  };
 
-module.exports = {
+ const deleteUser = async (id) => Users.destroy({ where: { id } });
+
+ module.exports = {
   createUser,
    userLogin,
    getAllUser,
    getById,
+   deleteUser,
 }; 
