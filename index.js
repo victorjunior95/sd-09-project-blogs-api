@@ -4,6 +4,7 @@ const error = require('./middlewares/error');
 const validateJWT = require('./middlewares/validateJWT');
 const User = require('./controllers/User');
 const Categories = require('./controllers/Categories');
+const Post = require('./controllers/Post');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get('/categories', validateJWT, Categories.getAll);
 app.post('/user', User.create);
 app.post('/login', User.login);
 app.post('/categories', validateJWT, Categories.create);
+app.post('/post', validateJWT, Post.create);
 
 app.use(error);
 
