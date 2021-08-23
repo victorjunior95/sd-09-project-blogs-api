@@ -1,6 +1,6 @@
 const joi = require('joi');
 const boom = require('@hapi/boom');
-const { BlogPost, Category } = require('../models');
+const { BlogPost, Category, User } = require('../models');
 
 const validatePostInputs = (title, content, categoryIds) => {
   const post = joi.object({
@@ -33,4 +33,14 @@ const create = async (title, content, categoryIds, user) => {
   return post;
 };
 
-module.exports = { create };
+const getAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return posts;
+};
+
+module.exports = { create, getAll };
