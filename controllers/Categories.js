@@ -2,7 +2,7 @@ const rescue = require('express-rescue');
 const Categories = require('../services/Categories');
 
 const CREATED = 201;
-// const OK = 200;
+const OK = 200;
 
 const create = rescue(async (req, res) => {
   const { name } = req.body;
@@ -10,4 +10,9 @@ const create = rescue(async (req, res) => {
   return res.status(CREATED).json(category);
 });
 
-module.exports = { create };
+const getAll = rescue(async (_req, res) => {
+  const categories = await Categories.getAll();
+  return res.status(OK).json(categories);
+});
+
+module.exports = { create, getAll };
