@@ -47,21 +47,22 @@ const checkPostOwner = async (postId, userId) => {
   }
 };
  const validateCategories = async (categories) => {
-   const notFound = 'CategoriescategoryIds" not found';
+   const notFound = '"categoryIds" not found';
    const validCategories = await Categories.findAll();
  
    if (categories === undefined) {
  return { isError: true,
           err: { message: notFound },
-           code: 400 }; 
+           status: 400 }; 
 }
    const categoriesId = validCategories.map((item) => item.id);
+   
    const validCategory = categories.every((id) => categoriesId.includes(id));
    if (!validCategory) {
       return {
      isError: true,
-     error: { message: notFound },
-     code: 400,
+     err: { message: notFound },
+     status: 400,
    };
  }
  };
@@ -81,7 +82,7 @@ const createPost = async (data, user) => {
   const { id } = user;
  const { title, content, categoryIds } = data;
  const ReturnValidateCategories = await validateCategories(categoryIds);
- 
+ console.log(ReturnValidateCategories);
   if (ReturnValidateCategories) { return ReturnValidateCategories; } 
  const result = await BlogPosts.create({
     title,
