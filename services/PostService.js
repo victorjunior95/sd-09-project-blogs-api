@@ -49,9 +49,17 @@ const getPostById = async (id) => {
   return postById;
 };
 
+const updatePost = async (title, content, id) => {
+  const post = await BlogPost.update({ title, content }, { where: { id } })
+    .then(() => getPostById(id));
+
+  return post;
+};
+
 module.exports = { 
   createPost,
   createPostCategory,
   getAllPosts,
   getPostById,
+  updatePost,
 }; 

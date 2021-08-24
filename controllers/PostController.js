@@ -1,13 +1,16 @@
 const express = require('express');
 const BlogPostValidate = require('../middlewares/BlogPostValidate');
+const CanUserUpdatePost = require('../middlewares/CanUserUpdatePost');
 const DoesPostExists = require('../middlewares/DoesPostExists');
+const isThereCategoryIdsForUpdate = require('../middlewares/AreInputForUpdateRight');
 const ValidateToken = require('../middlewares/ValidateToken');
 const { doesCategoriesExists } = require('../services/CategoriesService');
-const { 
-    createPost, 
-    createPostCategory, 
-    getAllPosts, 
+const {
+    createPost,
+    createPostCategory,
+    getAllPosts,
     getPostById,
+    updatePost,
 } = require('../services/PostService');
 
 const PostRouter = express.Router();
@@ -42,5 +45,21 @@ PostRouter.get('/:id', ValidateToken, DoesPostExists, async (req, res, next) => 
         return next(err);
     }
 });
+
+PostRouter.put(
+    '/:id',
+    ValidateToken,
+    isThereCategoryIdsForUpdate,
+    CanUserUpdatePost,
+    async (req, res, next) => {
+        const { id } = req.params;
+        const { title, content } = req.body;
+        try {
+            const editedPost = await updatePost(title, content, id);
+            return res.status(200).json(editedPost);
+        } catch (err) {
+            return next(err);
+        }
+    });
 
 module.exports = PostRouter;
