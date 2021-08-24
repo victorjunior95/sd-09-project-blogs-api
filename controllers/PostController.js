@@ -60,6 +60,7 @@ PostRouter.put(
         } catch (err) {
             return next(err);
         }
-    });
+    },
+);
 
 module.exports = PostRouter;
