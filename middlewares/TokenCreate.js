@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const SECRET = 'essaédificil';
+const SECRET = 'essaedificil';
 
 const TokenCreate = async (payload) => {
     const jwtConfig = {
