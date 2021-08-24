@@ -9,6 +9,6 @@ userRoute
     .get('/', tokenValidation, userController.getAllUser);
 userRoute
     .get('/:id', tokenValidation, userController.getById)
-    .delete('/:id', tokenValidation, userController.deleteUser);
+    .delete('/me', tokenValidation, userController.deleteUser);
   
 module.exports = userRoute;

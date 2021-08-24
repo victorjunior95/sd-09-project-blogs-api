@@ -56,14 +56,12 @@ const updatePostById = async (req, res) => {
 const deletePost = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO DELETAR UM POST');
   try {
-    await posts.deletePost(req.params.id, req.user);
-    res.status(204).end();
+   const result = await posts.deletePost(req.params.id, req.user);
+   if (result.isError) return res.status(result.status).json(result.err);
+   return res.status(204).end();
   } catch (error) {
-    let code = 404;
-    if (error === 'Unauthorized user') code = 401;
-    if (error === 'Not deleted') code = 500;
-    console.log(`[POST CONTROLLER] : buscar => ${error}`);
-    res.status(code).json({ message: error });
+      console.log(`[POST CONTROLLER] : buscar => ${error}`);
+   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error });
   }
 };
 

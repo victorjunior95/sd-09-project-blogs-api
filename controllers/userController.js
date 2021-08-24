@@ -54,11 +54,13 @@ const createUser = async (req, res) => {
   const deleteUser = async (req, res) => {
     console.log('[USER CONTROLLER] : CHAMOU O MÉTODO DELETE');
     try {
-      await UserService.deleteUser(req.user.dataValues.id);
-      res.status(StatusCodes.NO_CONTENT).end();
+      console.log(req.user);
+      await UserService.deleteUser(req.user.id);
+      
+     return res.status(StatusCodes.NO_CONTENT).end();
     } catch (error) {
       console.log(`[USER CONTROLLER] : buscar => ${error}`);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
   };
   module.exports = {
