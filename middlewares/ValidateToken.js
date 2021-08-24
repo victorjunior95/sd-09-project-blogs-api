@@ -1,6 +1,17 @@
 const jwt = require('jsonwebtoken');
+const UserService = require('../services/UserService');
 
-module.exports = (req, res, next) => {
+const tryFindUser = async (payload, next) => {
+    const user = await UserService.findUserByEmail(payload.email);
+    if (!user) {
+        const err = new Error('invalid user');
+        err.statusCode = 401;
+        return next(err);
+    }
+    return user;
+};
+
+module.exports = async (req, res, next) => {
     const token = req.headers.authorization;
     if (!token || token === '') {
         const err = new Error('Token not found');
@@ -9,7 +20,8 @@ module.exports = (req, res, next) => {
     }
     try {
         const payload = jwt.verify(token, process.env.SECRET);
-        req.user = payload;
+        const user = await tryFindUser(payload, next);
+        req.user = user;
         return next();
     } catch (err) {
         err.statusCode = 401;
