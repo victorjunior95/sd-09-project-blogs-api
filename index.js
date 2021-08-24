@@ -7,7 +7,7 @@ const postRoutes = require('./routes/postRoutes');
 const categorieRoutes = require('./routes/categorieRoutes');
 // const auth = require('./middlewares/auth');
 
-const { PORT } = process.env;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
