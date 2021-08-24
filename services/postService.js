@@ -122,7 +122,7 @@ err: { message: 'Post does not exist' },
  const updatePostById = async (id, data, user) => {
   const returnValidate = validateEditPostInputs(data);
   if (returnValidate) { return returnValidate; }
-  const returnPost = await checkPostOwner(id, user.dataValues.id);
+  const returnPost = await checkPostOwner(id, user.id);
   if (returnPost) { return returnPost; }
    const { title, content } = data;
    await BlogPosts.update({ title, content, updated: Date() }, { where: { id } });
