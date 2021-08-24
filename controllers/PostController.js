@@ -11,6 +11,7 @@ const {
     getAllPosts,
     getPostById,
     updatePost,
+    deletePost,
 } = require('../services/PostService');
 
 const PostRouter = express.Router();
@@ -57,6 +58,22 @@ PostRouter.put(
         try {
             const editedPost = await updatePost(title, content, id);
             return res.status(200).json(editedPost);
+        } catch (err) {
+            return next(err);
+        }
+    },
+);
+
+PostRouter.delete(
+    '/:id',
+    ValidateToken,
+    DoesPostExists,
+    CanUserUpdatePost,
+    async (req, res, next) => {
+        const { id } = req.params;
+        try {
+            await deletePost(id);
+            return res.status(204).send();
         } catch (err) {
             return next(err);
         }
