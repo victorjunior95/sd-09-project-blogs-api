@@ -14,7 +14,7 @@ const createPostCategory = async (categoryIds, postId) => {
 };
 
 const getAllPosts = async () => {
-  const post = await BlogPost.findAll({
+  const allPosts = await BlogPost.findAll({
     include: [
       {
         model: User,
@@ -28,7 +28,8 @@ const getAllPosts = async () => {
       },
     ],
   });
-  return post;
+  console.log(allPosts, 'ENTROU AQUI');
+  return allPosts;
 };
 
 module.exports = { 
