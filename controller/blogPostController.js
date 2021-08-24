@@ -54,9 +54,18 @@ const getPostsById = async (req, res) => {
 
 const putPostsById = async (req, res) => {
   try {
-    // const { id } = req.params;
+    const { title, content } = req.body;
+    const { id } = req.params;
 
-    return res.status(200).json('response');
+    await BlogPosts.update({ title, content }, { where: { id } });
+
+    const response = await BlogPosts.findOne({
+      where: { id },
+      attributes: { exclude: ['id', 'published', 'updated'] },
+      include: [{ model: Categories, as: 'categories', through: { attributes: [] } }],
+    });
+
+    return res.status(200).json(response);
   } catch (error) {
     return res.status(401).json({ message: error });
   }

@@ -7,8 +7,8 @@ const validUpdate = async (req, res, next) => {
   if (!content) {
     return res.status(400).json({ message: '"content" is required' });
   }
-  if (categoryIds === null || categoryIds === undefined) {
-    return res.status(401).json({ message: 'Categories cannot be edited' });
+  if (categoryIds) {
+    return res.status(400).json({ message: 'Categories cannot be edited' });
   }
 
   next();

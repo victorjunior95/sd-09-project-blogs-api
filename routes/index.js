@@ -6,7 +6,7 @@ const middleware = require('../middlewares');
 
 const router = express.Router();
 
-router.put('/post/:id', middleware.auth, middleware.validUpdate, controllerPost.putPostsById);
+router.put('/post/:id', middleware.auth, middleware.autenticUser, middleware.validUpdate, controllerPost.putPostsById);
 
 router.get('/user/:id', controllerUser.getUser);
 router.get('/post/:id', middleware.auth, controllerPost.getPostsById);
