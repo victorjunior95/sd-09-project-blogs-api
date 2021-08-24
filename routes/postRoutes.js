@@ -7,11 +7,11 @@ const postRoute = Router();
 postRoute
     .get('/search?:searchTerm', tokenValidation, postController.searchPosts);
 postRoute
-    .post('/', tokenValidation, postController.createPost)
+   // .post('/', tokenValidation, postController.createPost)
     .get('/', tokenValidation, postController.getAllPosts);
-postRoute
-    .get('/:id', tokenValidation, postController.getPostById)
-    .delete('/:id', tokenValidation, postController.deletePost)
-    .put('/:id', tokenValidation, postController.updatePostById);
+// postRoute
+//     .get('/:id', tokenValidation, postController.getPostById)
+//     .delete('/:id', tokenValidation, postController.deletePost)
+//     .put('/:id', tokenValidation, postController.updatePostById);
   
 module.exports = postRoute;
