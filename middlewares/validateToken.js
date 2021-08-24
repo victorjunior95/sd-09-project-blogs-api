@@ -4,14 +4,14 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 
 const validateToken = async (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = await req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({ message: 'Token not found' });
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
+    const payload = await jwt.verify(token, JWT_SECRET);
     const { id } = payload.data;
     req.userId = id;
     next();

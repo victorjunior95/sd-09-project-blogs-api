@@ -45,7 +45,7 @@ const deletePost = async (req, res, next) => {
 
   const result = await BlogPost.deletePost({ id, userId });
   if (result.error) return next(result);
-  res.status(204).json();
+  res.status(204).json(result);
 };
 
 module.exports = {
