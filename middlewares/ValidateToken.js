@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const UserService = require('../services/UserService');
 
+const SECRET = 'essaedificil';
+
 const tryFindUser = async (payload, next) => {
     const user = await UserService.findUserByEmail(payload.email);
     if (!user) {
@@ -19,7 +21,7 @@ module.exports = async (req, res, next) => {
         return next(err);
     }
     try {
-        const payload = jwt.verify(token, process.env.SECRET);
+        const payload = jwt.verify(token, SECRET);
         const user = await tryFindUser(payload, next);
         req.user = user;
         return next();
