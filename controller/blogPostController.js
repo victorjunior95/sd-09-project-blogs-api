@@ -76,7 +76,6 @@ const delPostsById = async (req, res) => {
     const { id } = req.params;
 
     await BlogPosts.destroy({ where: { id } });
-    console.log('DESTRUIAO');
     return res.status(204).end();
   } catch (error) {
     return res.status(401).json({ message: error });

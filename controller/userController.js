@@ -54,4 +54,17 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { createUsers, getAllUsers, getUser, login };
+const deleteMe = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    const { data } = jwt.verify(token, process.env.JWT_SECRET);
+    await Users.destroy({ where: { email: data } });
+    
+    return res.status(204).end();
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
+};
+
+module.exports = { createUsers, getAllUsers, getUser, login, deleteMe };

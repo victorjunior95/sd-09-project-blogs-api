@@ -16,7 +16,7 @@ router.delete('/post/:id',
 middleware.auth,
 middleware.autenticUser,
 controllerPost.delPostsById);
-// router.delete('/user/me');
+router.delete('/user/me', middleware.auth, controllerUser.deleteMe);
 
 router.get('/user/:id', controllerUser.getUser);
 router.get('/post/:id', middleware.auth, controllerPost.getPostsById);
