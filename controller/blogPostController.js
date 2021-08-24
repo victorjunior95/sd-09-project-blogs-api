@@ -71,4 +71,16 @@ const putPostsById = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getAllPost, getPostsById, putPostsById };
+const delPostsById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await BlogPosts.destroy({ where: { id } });
+    console.log('DESTRUIAO');
+    return res.status(204).end();
+  } catch (error) {
+    return res.status(401).json({ message: error });
+  }
+};
+
+module.exports = { createPost, getAllPost, getPostsById, putPostsById, delPostsById };

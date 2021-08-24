@@ -15,11 +15,10 @@ const autenticUser = async (req, res, next) => {
     where: { email: data },
   });
 
-  // console.log('POST: ', postUser.dataValues.id);
-  // console.log('DATA: ', idUser.id);
+  if (postUser === null) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
 
-  console.log('--------------------> CONSOLE <------------------');
-  console.log(postUser.dataValues.id, ' !== ', idUser.id);
   if (postUser.dataValues.id !== idUser.id) {
     return res.status(401).json({ message: 'Unauthorized user' });
   }
