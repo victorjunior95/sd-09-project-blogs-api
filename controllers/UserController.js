@@ -4,6 +4,7 @@ const NewUserDataValidate = require('../middlewares/NewUserDataValidade');
 const DoesEmailExists = require('../middlewares/DoesEmailExists');
 const ValidateToken = require('../middlewares/ValidateToken');
 const { User } = require('../models');
+const { deleteMyAccount } = require('../services/UserService');
 
 const UsersRouter = express.Router();
 
@@ -29,5 +30,15 @@ UsersRouter.get('/:id', ValidateToken, async (req, res) => {
   const { password, ...userWithoutPassword } = userFoundById.dataValues;
   res.status(200).json(userWithoutPassword);
 });
+
+UsersRouter.delete('/me', ValidateToken, async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    await deleteMyAccount(id);
+    return res.status(204).send();
+  } catch (error) {
+    return next(error);
+  }
+}); 
 
 module.exports = UsersRouter;
