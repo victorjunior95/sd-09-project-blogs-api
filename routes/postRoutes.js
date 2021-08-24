@@ -5,7 +5,7 @@ const { tokenValidation } = require('../middlewares/tokenValidation');
 const postRoute = Router();
 
 postRoute
-    .get('/search?:searchTerm', postController.searchPosts);
+    .get('/search?:searchTerm', tokenValidation, postController.searchPosts);
 postRoute
     .post('/', tokenValidation, postController.createPost)
     .get('/', tokenValidation, postController.getAllPosts);

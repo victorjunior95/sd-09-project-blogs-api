@@ -1,6 +1,8 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('testTables', {
+      // categoryId: { type: DataTypes.INTEGER, primaryKey: true },
+      // postId: { type: DataTypes.INTEGER, primareyKey: true },
       id: {
         allowNull: false,
         autoIncrement: true,

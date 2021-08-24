@@ -4,13 +4,14 @@ const posts = require('../services/postService');
 const createPost = async (req, res) => {
  console.log('[POST CONTROLLER] : CHAMOU O MÉTODO CRIAR UM POST');
   try {
-    const { user, body } = req;
-    const result = await posts.createPost(body, user);
+    const bodyValue = req.body;
+    const userValue = req.user;
+    const result = await posts.createPost(bodyValue, userValue);
     if (result.isError) return res.status(result.status).json(result.err);
       return res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -70,8 +71,7 @@ const searchPosts = async (req, res) => {
   console.log('[POST CONTROLLER] : CHAMOU O MÉTODO PROCURAR UM POST');
   try {
     const result = await posts.searchPosts(req.query.q);
-    if (result.isError) return res.status(result.status).json(result.err);
-    res.status(200).json(result);
+      res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.log(`[POST CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });

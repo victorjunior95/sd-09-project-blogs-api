@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const loginRoutes = require('./routes/loginRoutes');
-// const postRoutes = require('./routes/postRoutes');
+const postRoutes = require('./routes/postRoutes');
 const categorieRoutes = require('./routes/categorieRoutes');
 // const auth = require('./middlewares/auth');
 
@@ -22,6 +22,6 @@ app.get('/', (request, response) => {
 
 app.use('/user', userRoutes);
 app.use('/login', loginRoutes);
-// app.use('/post', postRoutes);
+app.use('/post', postRoutes);
 app.use('/categories', categorieRoutes);
 // app.post('/login', auth);
