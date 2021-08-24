@@ -15,7 +15,6 @@ const doesUserExists = async (email, next) => {
 };
 
 module.exports = async (req, _res, next) => {
-    
     const isInputsValid = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().length(6).required(),
