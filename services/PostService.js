@@ -23,12 +23,11 @@ const getAllPosts = async () => {
       },
       {
         model: Category,
-        as: 'Categories',
+        as: 'categories',
         through: { attributes: [] },
       },
     ],
   });
-  console.log(allPosts, 'ENTROU AQUI');
   return allPosts;
 };
 

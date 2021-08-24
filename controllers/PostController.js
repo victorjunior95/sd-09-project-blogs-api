@@ -21,6 +21,7 @@ PostRouter.post('/', ValidateToken, BlogPostValidate, async (req, res) => {
 PostRouter.get('/', ValidateToken, async (req, res, next) => {
     try {
         const allPosts = await getAllPosts();
+        console.log(allPosts, 'ENTROU AQUI');
         return res.status(200).json(allPosts);
     } catch (err) {
         return next(err);
