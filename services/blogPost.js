@@ -53,32 +53,27 @@ const getPostById = async (id) => {
   return result;
 };
 
-// const verifyUserAuth = async (id, userId) => {
-//   const post = await getPostById(id);
-//   // console.log(`esse é o id de quem postou ${post}`);
-//   // console.log(`esse é o id de quem atualizou ${userId}`);
-//   if (post.user.id !== userId) { // undefined id post.user.id
-//     return {
-//       status: 401, error: { message: 'Unauthorizaaaed user' },
-//     };
-//   }
-// };
+const verifyNumberId = async (id) => {
+  const allPosts = await getAllPosts();
+  if (id > allPosts.length) {
+    return {
+      status: 404, error: { message: 'Post does not exist' },
+    };
+  }
+};
 
-const updatePost = async ({ id, title, content, categoryIds, userId }) => {
+const updatePost = async ({ id, title, content, categoryIds, _userId }) => {
   // // valida se foi enviado categorias
+  const test = await verifyNumberId(id);
+if (test) return test;
   const validateIfIsCategories = await VerifyIfNoIsCategoriesOnEdition(categoryIds);
 
   if (validateIfIsCategories) return validateIfIsCategories;
-  
+
   // // valida as info do post
   const validateInfos = validUpdate(title, content);
   
   if (validateInfos) return validateInfos;
-console.log(`esse é o id ${id}`);
-console.log(`esse é o ${userId}`);
-  // const verifyUser = await verifyUserAuth(id, userId);
-
-  // if (verifyUser) return verifyUser;
 
   await BlogPost.update({ title, content }, { where: { id } });
   const result = await BlogPost.findOne({ 
