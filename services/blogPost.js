@@ -53,6 +53,15 @@ const getPostById = async (id) => {
   return result;
 };
 
+const verifyUser = async (id, userId) => {
+  const post = await getPostById(id);
+  if (post.user.id !== userId) {
+    return {
+      status: 401, error: { message: 'Unauthorized user' },
+    };
+  }
+};
+
 const verifyNumberId = async (id) => {
   const allPosts = await getAllPosts();
   if (id > allPosts.length) {
@@ -62,10 +71,16 @@ const verifyNumberId = async (id) => {
   }
 };
 
-const updatePost = async ({ id, title, content, categoryIds, _userId }) => {
-  // // valida se foi enviado categorias
-  const test = await verifyNumberId(id);
-if (test) return test;
+const updatePost = async ({ id, title, content, categoryIds, userId }) => {
+  // verifica se existe o post
+  const verifyIdPost = await verifyNumberId(id);
+  if (verifyIdPost) return verifyIdPost;
+
+// valida se é do mesmo usuario
+  const verifyAuthUser = await verifyUser(id, userId);
+  if (verifyAuthUser) return verifyAuthUser;
+
+// // valida se foi enviado categorias
   const validateIfIsCategories = await VerifyIfNoIsCategoriesOnEdition(categoryIds);
 
   if (validateIfIsCategories) return validateIfIsCategories;
@@ -83,27 +98,26 @@ if (test) return test;
     ],
   });
 
-  delete result.dataValues.id;
-  delete result.dataValues.user;
-  delete result.dataValues.published;
-  delete result.dataValues.updated;
+  delete result.dataValues.id; delete result.dataValues.user;
+  delete result.dataValues.published; delete result.dataValues.updated;
 
  return result;
 };
 
 const deletePost = async ({ id, userId }) => {
-  console.log(userId);
-  // const verifyUser = await verifyUserAuth(id, userId);
-  // if (verifyUser) return verifyUser;
+  const verifyIdPost = await verifyNumberId(id);
+  if (verifyIdPost) return verifyIdPost;
+
+  const verifyAuthUser = await verifyUser(id, userId);
+  if (verifyAuthUser) return verifyAuthUser;
   
   const result = await BlogPost.destroy({ where: { id } });
-  
   if (!result) {
     return {
       status: 404, error: { message: 'Post does not exist' },
     };
   }
-
+  
   return result;
 };
 
