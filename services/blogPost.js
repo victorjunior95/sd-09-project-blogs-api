@@ -55,11 +55,11 @@ const getPostById = async (id) => {
 
 const verifyUserAuth = async (id, userId) => {
   const post = await getPostById(id);
-  // console.log(`esse é o id de quem postou ${post.user.id}`);
+  // console.log(`esse é o id de quem postou ${post}`);
   // console.log(`esse é o id de quem atualizou ${userId}`);
-  if (post.user.id !== userId) {
+  if (post.user.id !== userId) { // undefined id post.user.id
     return {
-      status: 401, error: { message: 'Unauthorized user' },
+      status: 401, error: { message: 'Unauthorizaaaed user' },
     };
   }
 };
@@ -74,11 +74,11 @@ const updatePost = async ({ id, title, content, categoryIds, userId }) => {
   const validateInfos = validUpdate(title, content);
   
   if (validateInfos) return validateInfos;
-// console.log(`esse é o id ${id}`);
-// console.log(`esse é o ${userId}`);
-  const verifyUser = await verifyUserAuth(id, userId);
+console.log(`esse é o id ${id}`);
+console.log(`esse é o ${userId}`);
+  // const verifyUser = await verifyUserAuth(id, userId);
 
-  if (verifyUser) return verifyUser;
+  // if (verifyUser) return verifyUser;
 
   await BlogPost.update({ title, content }, { where: { id } });
   const result = await BlogPost.findOne({ 
