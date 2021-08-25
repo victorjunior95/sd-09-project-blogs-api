@@ -44,9 +44,22 @@ const getUserById = async (req, res, next) => {
 
   res.status(200).json(user);
 };
+
+const deleteUser = async (req, res, next) => {
+  const { userId } = req;
+  
+  console.log(`vcx esta no controller${userId}`);
+
+  const result = await User.deleteUser({ userId });
+  if (result.error) return next(result);
+
+  res.status(204).json(result);
+};
+
 module.exports = {
   create,
   login,
   getAllUsers,
   getUserById,
+  deleteUser,
 };

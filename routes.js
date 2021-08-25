@@ -18,5 +18,6 @@ router.get('/post/:id', validateToken, BlogPost.getPostById);
 router.put('/post/:id', validateToken, BlogPost.update);
 
 router.delete('/post/:id', validateToken, BlogPost.deletePost);
+router.delete('/user/me', validateToken, User.deleteUser);
 
 module.exports = router;

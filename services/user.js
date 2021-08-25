@@ -64,9 +64,22 @@ const getUserById = async (id) => {
   return result;
 };
 
+const deleteUser = async ({ userId: id }) => {
+  const result = await User.destroy({ where: { id } });
+
+  if (!result) {
+    return {
+      status: 404, error: { message: 'User does not exist' },
+    };
+  }
+  
+  return result;
+};
+
 module.exports = {
   create,
   login,
   getAllUsers,
   getUserById,
+  deleteUser,
 };
