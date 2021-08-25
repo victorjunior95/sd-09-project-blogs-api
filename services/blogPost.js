@@ -53,16 +53,16 @@ const getPostById = async (id) => {
   return result;
 };
 
-const verifyUserAuth = async (id, userId) => {
-  const post = await getPostById(id);
-  // console.log(`esse é o id de quem postou ${post}`);
-  // console.log(`esse é o id de quem atualizou ${userId}`);
-  if (post.user.id !== userId) { // undefined id post.user.id
-    return {
-      status: 401, error: { message: 'Unauthorizaaaed user' },
-    };
-  }
-};
+// const verifyUserAuth = async (id, userId) => {
+//   const post = await getPostById(id);
+//   // console.log(`esse é o id de quem postou ${post}`);
+//   // console.log(`esse é o id de quem atualizou ${userId}`);
+//   if (post.user.id !== userId) { // undefined id post.user.id
+//     return {
+//       status: 401, error: { message: 'Unauthorizaaaed user' },
+//     };
+//   }
+// };
 
 const updatePost = async ({ id, title, content, categoryIds, userId }) => {
   // // valida se foi enviado categorias
@@ -97,8 +97,9 @@ console.log(`esse é o ${userId}`);
 };
 
 const deletePost = async ({ id, userId }) => {
-  const verifyUser = await verifyUserAuth(id, userId);
-  if (verifyUser) return verifyUser;
+  console.log(userId);
+  // const verifyUser = await verifyUserAuth(id, userId);
+  // if (verifyUser) return verifyUser;
   
   const result = await BlogPost.destroy({ where: { id } });
   
